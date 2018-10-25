@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+
+<robot
+  name="weed_robot_description" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.0051979 -0.000106669999999963 0.60129"
+        rpy="0 0 0" />
+      <mass
+        value="311.18" />
+      <inertia
+        ixx="91.5642253290924"
+        ixy="0.0992588320365362"
+        ixz="0.960515480181908"
+        iyy="146.047714898025"
+        iyz="0.0147251032210491"
+        izz="187.27761145456" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="1.5707963267949 0 0" />
+      <geometry>
+        <mesh
+          filename="package://weed_robot_description/meshes/weed_robot_description.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="1.5707963267949 0 0" />
+      <geometry>
+        <mesh
+          filename="package://weed_robot_description/meshes/weed_robot_description.STL" />
+      </geometry>
+    </collision>
+  </link>
+</robot>

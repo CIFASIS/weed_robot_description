@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>weed_robot_description</name>
+  <version>0.0.0</version>
+  <description>The weed Removing Robot package</description>
+
+  <maintainer email="pire@cifasis-conicet.gov.ar">taihu</maintainer>
+
+  <license>BSD</license>
+  <author email="pire@cifasis-conicet.gov.ar">Taihú Pire</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+
+</package>
