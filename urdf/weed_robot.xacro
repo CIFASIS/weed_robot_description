@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot name="weed_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:arg name="meshes" default="true"/>
+
+<xacro:include filename="$(find weed_robot_description)/urdf/material.xacro"/>
+<xacro:include filename="$(find weed_robot_description)/urdf/gazebo.xacro"/>
+<xacro:include filename="$(find weed_robot_description)/urdf/macro.xacro"/>
+
+<xacro:property name="config_yaml" value="$(find weed_robot_description)/config/weed_robot.yaml"/>
+<xacro:property name="config" value="${load_yaml(config_yaml)}"/>
+
+<!-- Dummy -->
+<link name="dummy_link"/>
+
+<!-- Chassis -->
+<link name="base_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['chassis']['mass']}"/>
+    <xacro:box_inertia link_config="${config['chassis']}"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:if value="$(arg meshes)">
+        <mesh filename="package://weed_robot_description/meshes/chassis.stl"/>
+      </xacro:if>
+      <xacro:unless value="$(arg meshes)">
+        <xacro:box_geometry link_config="${config['chassis']}"/>
+      </xacro:unless>
+    </geometry>
+    <material name="grey"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:box_geometry link_config="${config['chassis']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="base_link">
+  <visual>
+    <material>
+      <xacro:gmaterial color="grey"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="dummy_joint" type="fixed">
+  <parent link="dummy_link"/>
+  <child link="base_link"/>
+</joint>
+
+<!-- Panels -->
+<link name="panels_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['panels']['mass']}"/>
+    <xacro:box_inertia link_config="${config['panels']}"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:if value="$(arg meshes)">
+        <mesh filename="package://weed_robot_description/meshes/panels.stl"/>
+      </xacro:if>
+      <xacro:unless value="$(arg meshes)">
+        <xacro:box_geometry link_config="${config['panels']}"/>
+      </xacro:unless>
+    </geometry>
+    <material name="blue"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:box_geometry link_config="${config['panels']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="panels_link">
+  <visual>
+    <material>
+      <xacro:gmaterial color="blue"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="base_panels_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="panels_link"/>
+  <origin xyz="0 0 0.1875" rpy="0 0 0"/>
+</joint>
+
+<!-- Fork front-left -->
+<link name="fork_fl_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['fork']['mass']}"/>
+    <xacro:box_inertia link_config="${config['fork']}"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:if value="$(arg meshes)">
+        <mesh filename="package://weed_robot_description/meshes/fork.stl"/>
+      </xacro:if>
+      <xacro:unless value="$(arg meshes)">
+        <xacro:box_geometry link_config="${config['fork']}"/>
+      </xacro:unless>
+    </geometry>
+    <material name="dark_grey"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:box_geometry link_config="${config['fork']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="fork_fl_link">
+  <visual>
+    <material>
+      <xacro:gmaterial color="dark_grey"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="base_fork_fl_joint" type="revolute">
+  <parent link="base_link"/>
+  <child link="fork_fl_link"/>
+  <origin rpy="0 0 0" xyz="0.791 0.527 -0.292"/>
+  <axis xyz="0 0 1"/>
+  <limit lower="${-25/180*pi}" upper="${36/180*pi}" effort="1000" velocity="0.01"/>
+  <dynamics damping="1000"/>
+</joint>
+
+<!-- Fork front-right -->
+<link name="fork_fr_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['fork']['mass']}"/>
+    <xacro:box_inertia link_config="${config['fork']}"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:if value="$(arg meshes)">
+        <mesh filename="package://weed_robot_description/meshes/fork.stl"/>
+      </xacro:if>
+      <xacro:unless value="$(arg meshes)">
+        <xacro:box_geometry link_config="${config['fork']}"/>
+      </xacro:unless>
+    </geometry>
+    <material name="dark_grey"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:box_geometry link_config="${config['fork']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="fork_fr_link">
+  <visual>
+    <material>
+      <xacro:gmaterial color="dark_grey"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="base_fork_fr_joint" type="revolute">
+  <parent link="base_link"/>
+  <child link="fork_fr_link"/>
+  <origin xyz="0.791 -0.527 -0.292" rpy="0 0 0"/>
+  <axis xyz="0 0 1"/>
+  <limit lower="${-36/180*pi}" upper="${25/180*pi}" effort="1000" velocity="0.01"/>
+  <dynamics damping="1000"/>
+</joint>
+
+<!-- Steer -->
+<link name="steer_link"/>
+<joint name="base_steer_joint" type="revolute">
+  <parent link="base_link"/>
+  <child link="steer_link"/>
+  <origin xyz="0.791 0 -0.292" rpy="0 0 0"/>
+  <axis xyz="0 0 1"/>
+  <limit lower="${-30/180*pi}" upper="${30/180*pi}" effort="1000" velocity="0.01"/>
+  <dynamics damping="1000"/>
+</joint>
+
+<!-- Fork rear-left -->
+<link name="fork_rl_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['fork']['mass']}"/>
+    <xacro:box_inertia link_config="${config['fork']}"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:if value="$(arg meshes)">
+        <mesh filename="package://weed_robot_description/meshes/fork.stl"/>
+      </xacro:if>
+      <xacro:unless value="$(arg meshes)">
+        <xacro:box_geometry link_config="${config['fork']}"/>
+      </xacro:unless>
+    </geometry>
+    <material name="dark_grey"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:box_geometry link_config="${config['fork']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="fork_rl_link">
+  <visual>
+    <material>
+      <xacro:gmaterial color="dark_grey"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="base_fork_rl_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="fork_rl_link"/>
+  <origin xyz="-0.791 0.527 -0.292" rpy="0 0 0"/>
+</joint>
+
+<!-- Fork rear-right -->
+<link name="fork_rr_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['fork']['mass']}"/>
+    <xacro:box_inertia link_config="${config['fork']}"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:if value="$(arg meshes)">
+        <mesh filename="package://weed_robot_description/meshes/fork.stl"/>
+      </xacro:if>
+      <xacro:unless value="$(arg meshes)">
+        <xacro:box_geometry link_config="${config['fork']}"/>
+      </xacro:unless>
+    </geometry>
+    <material name="dark_grey"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:box_geometry link_config="${config['fork']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="fork_rr_link">
+  <visual>
+    <material>
+      <xacro:gmaterial color="dark_grey"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="base_fork_rr_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="fork_rr_link"/>
+  <origin xyz="-0.791 -0.527 -0.292" rpy="0 0 0"/>
+</joint>
+
+<!-- Wheel front-left -->
+<link name="wheel_fl_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['wheel']['mass']}"/>
+    <xacro:cylinder_inertia link_config="${config['wheel']}"/>
+  </inertial>
+  <visual>
+    <xacro:if value="$(arg meshes)">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://weed_robot_description/meshes/wheel.stl"/>
+      </geometry>
+    </xacro:if>
+    <xacro:unless value="$(arg meshes)">
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+      </geometry>
+    </xacro:unless>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+    <geometry>
+      <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="wheel_fl_link">
+  <kp value="1000000"/>
+  <kd value="1"/>
+  <mu1 value="10"/>
+  <mu2 value="10"/>
+  <visual>
+    <material>
+      <xacro:gmaterial color="black"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="fork_wheel_fl_joint" type="continuous">
+  <parent link="fork_fl_link"/>
+  <child link="wheel_fl_link"/>
+  <origin xyz="0.041 0 -0.266" rpy="0 0 0" />
+  <axis xyz="0 1 0"/>
+</joint>
+
+<!-- Wheel front-right -->
+<link name="wheel_fr_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['wheel']['mass']}"/>
+    <xacro:cylinder_inertia link_config="${config['wheel']}"/>
+  </inertial>
+  <visual>
+    <xacro:if value="$(arg meshes)">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://weed_robot_description/meshes/wheel.stl"/>
+      </geometry>
+    </xacro:if>
+    <xacro:unless value="$(arg meshes)">
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+      </geometry>
+    </xacro:unless>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+    <geometry>
+      <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="wheel_fr_link">
+  <kp value="1000000"/>
+  <kd value="1"/>
+  <mu1 value="10"/>
+  <mu2 value="10"/>
+  <visual>
+    <material>
+      <xacro:gmaterial color="black"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="fork_wheel_fr_joint" type="continuous">
+  <parent link="fork_fr_link"/>
+  <child link="wheel_fr_link"/>
+  <origin xyz="0.041 0 -0.266" rpy="0 0 0" />
+  <axis xyz="0 1 0"/>
+</joint>
+
+<!-- Wheel rear-left -->
+<link name="wheel_rl_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['wheel']['mass']}"/>
+    <xacro:cylinder_inertia link_config="${config['wheel']}"/>
+  </inertial>
+  <visual>
+    <xacro:if value="$(arg meshes)">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://weed_robot_description/meshes/wheel.stl"/>
+      </geometry>
+    </xacro:if>
+    <xacro:unless value="$(arg meshes)">
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+      </geometry>
+    </xacro:unless>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+    <geometry>
+      <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="wheel_rl_link">
+  <kp value="1000000"/>
+  <kd value="1"/>
+  <mu1 value="10"/>
+  <mu2 value="10"/>
+  <visual>
+    <material>
+      <xacro:gmaterial color="black"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="fork_wheel_rl_joint" type="continuous">
+  <parent link="fork_rl_link"/>
+  <child link="wheel_rl_link"/>
+  <origin xyz="0.041 0 -0.266" rpy="0 0 0" />
+  <axis xyz="0 1 0"/>
+</joint>
+
+<!-- Wheel rear-right -->
+<link name="wheel_rr_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['wheel']['mass']}"/>
+    <xacro:cylinder_inertia link_config="${config['wheel']}"/>
+  </inertial>
+  <visual>
+    <xacro:if value="$(arg meshes)">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://weed_robot_description/meshes/wheel.stl"/>
+      </geometry>
+    </xacro:if>
+    <xacro:unless value="$(arg meshes)">
+      <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+      <geometry>
+        <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+      </geometry>
+    </xacro:unless>
+    <material name="black"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+    <geometry>
+      <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="wheel_rr_link">
+  <kp value="1000000"/>
+  <kd value="1"/>
+  <mu1 value="10"/>
+  <mu2 value="10"/>
+  <visual>
+    <material>
+      <xacro:gmaterial color="black"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="fork_wheel_rr_joint" type="continuous">
+  <parent link="fork_rr_link"/>
+  <child link="wheel_rr_link"/>
+  <origin xyz="0.041 0 -0.266" rpy="0 0 0" />
+  <axis xyz="0 1 0"/>
+</joint>
+
+<!-- Wheel -->
+<link name="wheel_link"/>
+<joint name="base_wheel_joint" type="continuous">
+  <parent link="base_link"/>
+  <child link="wheel_link"/>
+  <origin xyz="-0.791 0 -0.558" rpy="0 0 0"/>
+  <axis xyz="0 1 0"/>
+</joint>
+
+</robot>

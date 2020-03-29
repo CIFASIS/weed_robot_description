@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:macro name="box_inertia" params="link_config">
+  <xacro:property name="mass" value="${link_config['mass']}"/>
+  <xacro:property name="width" value="${link_config['width']}"/>
+  <xacro:property name="depth" value="${link_config['depth']}"/>
+  <xacro:property name="height" value="${link_config['height']}"/>
+  <inertia 
+    ixx="${1/12 * mass * (depth**2 + height**2)}" ixy="0" ixz="0" 
+    iyy="${1/12 * mass * (width**2 + height**2)}" iyz="0" 
+    izz="${1/12 * mass * (width**2 + depth**2)}"/>
+</xacro:macro>
+
+<xacro:macro name="box_geometry" params="link_config">
+  <xacro:property name="width" value="${link_config['width']}"/>
+  <xacro:property name="depth" value="${link_config['depth']}"/>
+  <xacro:property name="height" value="${link_config['height']}"/>
+  <box size="${width} ${depth} ${height}"/>
+</xacro:macro>
+
+<xacro:macro name="cylinder_inertia" params="link_config">
+  <xacro:property name="mass" value="${link_config['mass']}"/>
+  <xacro:property name="radius" value="${link_config['radius']}"/>
+  <xacro:property name="length" value="${link_config['length']}"/>
+  <inertia 
+    ixx="${1/12 * mass * (3 * radius**2 + length**2)}" ixy="0" ixz="0" 
+    iyy="${1/2 * mass * radius**2}" iyz="0" 
+    izz="${1/12 * mass * (3 * radius**2 + length**2)}"/>
+</xacro:macro>
+
+<xacro:macro name="cylinder_geometry" params="link_config">
+  <xacro:property name="radius" value="${link_config['radius']}"/>
+  <xacro:property name="length" value="${link_config['length']}"/>
+  <cylinder radius="${radius}" length="${length}"/>
+</xacro:macro>
+
+</robot>
