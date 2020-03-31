@@ -6,7 +6,7 @@
 
 <!-- carga el robot en param robot_description -->
 <param name="robot_description" 
-    command="$(find xacro)/xacro --inorder '$(find weed_robot_description)/urdf/weed_robot.xacro' 
+    command="$(find xacro)/xacro --inorder $(find weed_robot_description)/urdf/weed_robot.xacro 
       meshes:=$(arg meshes)"/>
 
 <!-- publica el estado de todos los joints no fijos del robot -->

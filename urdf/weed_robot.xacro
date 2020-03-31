@@ -4,7 +4,6 @@
 <xacro:arg name="meshes" default="true"/>
 
 <xacro:include filename="$(find weed_robot_description)/urdf/material.xacro"/>
-<xacro:include filename="$(find weed_robot_description)/urdf/gazebo.xacro"/>
 <xacro:include filename="$(find weed_robot_description)/urdf/macro.xacro"/>
 
 <xacro:property name="config_yaml" value="$(find weed_robot_description)/config/weed_robot.yaml"/>
@@ -129,7 +128,6 @@
   <origin rpy="0 0 0" xyz="0.791 0.527 -0.292"/>
   <axis xyz="0 0 1"/>
   <limit lower="${-25/180*pi}" upper="${36/180*pi}" effort="1000" velocity="0.01"/>
-  <dynamics damping="1000"/>
 </joint>
 
 <!-- Fork front-right -->
@@ -171,7 +169,6 @@
   <origin xyz="0.791 -0.527 -0.292" rpy="0 0 0"/>
   <axis xyz="0 0 1"/>
   <limit lower="${-36/180*pi}" upper="${25/180*pi}" effort="1000" velocity="0.01"/>
-  <dynamics damping="1000"/>
 </joint>
 
 <!-- Steer -->
@@ -182,7 +179,6 @@
   <origin xyz="0.791 0 -0.292" rpy="0 0 0"/>
   <axis xyz="0 0 1"/>
   <limit lower="${-30/180*pi}" upper="${30/180*pi}" effort="1000" velocity="0.01"/>
-  <dynamics damping="1000"/>
 </joint>
 
 <!-- Fork rear-left -->
@@ -452,7 +448,19 @@
 </joint>
 
 <!-- Wheel -->
-<link name="wheel_link"/>
+<link name="wheel_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['wheel']['mass']}"/>
+    <xacro:cylinder_inertia link_config="${config['wheel']}"/>
+  </inertial>
+  <collision>
+    <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+    <geometry>
+      <xacro:cylinder_geometry link_config="${config['wheel']}"/>
+    </geometry>
+  </collision>
+</link>
 <joint name="base_wheel_joint" type="continuous">
   <parent link="base_link"/>
   <child link="wheel_link"/>
