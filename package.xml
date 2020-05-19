@@ -2,7 +2,10 @@
 <package format="2">
   <name>weed_robot_description</name>
   <version>0.0.0</version>
-  <description>The weed Removing Robot package</description>
+    <description>
+    <p>URDF Description package for the weed Removing Robot</p>
+    <p>This package contains configuration data, 3D models and launch files for the Weed Removing Robot</p>
+  </description>
 
   <maintainer email="pire@cifasis-conicet.gov.ar">taihu</maintainer>
 

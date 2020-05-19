@@ -9,11 +9,11 @@
 <xacro:property name="config_yaml" value="$(find weed_robot_description)/config/weed_robot.yaml"/>
 <xacro:property name="config" value="${load_yaml(config_yaml)}"/>
 
-<!-- Dummy -->
-<link name="dummy_link"/>
+<!-- Base -->
+<link name="base_link"/>
 
 <!-- Chassis -->
-<link name="base_link">
+<link name="chassis_link">
   <inertial>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <mass value="${config['chassis']['mass']}"/>
@@ -38,16 +38,17 @@
     </geometry>
   </collision>
 </link>
-<gazebo reference="base_link">
+<gazebo reference="chassis_link">
   <visual>
     <material>
       <xacro:gmaterial color="grey"/>
     </material>
   </visual>
 </gazebo>
-<joint name="dummy_joint" type="fixed">
-  <parent link="dummy_link"/>
-  <child link="base_link"/>
+<joint name="base_chassis_joint" type="fixed">
+  <parent link="base_link"/>
+  <child link="chassis_link"/>
+  <origin xyz="0 0 0.83" rpy="0 0 0"/>
 </joint>
 
 <!-- Panels -->
@@ -83,8 +84,8 @@
     </material>
   </visual>
 </gazebo>
-<joint name="base_panels_joint" type="fixed">
-  <parent link="base_link"/>
+<joint name="chassis_panels_joint" type="fixed">
+  <parent link="chassis_link"/>
   <child link="panels_link"/>
   <origin xyz="0 0 0.1875" rpy="0 0 0"/>
 </joint>
@@ -122,8 +123,8 @@
     </material>
   </visual>
 </gazebo>
-<joint name="base_fork_fl_joint" type="revolute">
-  <parent link="base_link"/>
+<joint name="chassis_fork_fl_joint" type="revolute">
+  <parent link="chassis_link"/>
   <child link="fork_fl_link"/>
   <origin rpy="0 0 0" xyz="0.791 0.527 -0.292"/>
   <axis xyz="0 0 1"/>
@@ -163,8 +164,8 @@
     </material>
   </visual>
 </gazebo>
-<joint name="base_fork_fr_joint" type="revolute">
-  <parent link="base_link"/>
+<joint name="chassis_fork_fr_joint" type="revolute">
+  <parent link="chassis_link"/>
   <child link="fork_fr_link"/>
   <origin xyz="0.791 -0.527 -0.292" rpy="0 0 0"/>
   <axis xyz="0 0 1"/>
@@ -173,8 +174,8 @@
 
 <!-- Steer -->
 <link name="steer_link"/>
-<joint name="base_steer_joint" type="revolute">
-  <parent link="base_link"/>
+<joint name="chassis_steer_joint" type="revolute">
+  <parent link="chassis_link"/>
   <child link="steer_link"/>
   <origin xyz="0.791 0 -0.292" rpy="0 0 0"/>
   <axis xyz="0 0 1"/>
@@ -214,8 +215,8 @@
     </material>
   </visual>
 </gazebo>
-<joint name="base_fork_rl_joint" type="fixed">
-  <parent link="base_link"/>
+<joint name="chassis_fork_rl_joint" type="fixed">
+  <parent link="chassis_link"/>
   <child link="fork_rl_link"/>
   <origin xyz="-0.791 0.527 -0.292" rpy="0 0 0"/>
 </joint>
@@ -253,8 +254,8 @@
     </material>
   </visual>
 </gazebo>
-<joint name="base_fork_rr_joint" type="fixed">
-  <parent link="base_link"/>
+<joint name="chassis_fork_rr_joint" type="fixed">
+  <parent link="chassis_link"/>
   <child link="fork_rr_link"/>
   <origin xyz="-0.791 -0.527 -0.292" rpy="0 0 0"/>
 </joint>
@@ -461,8 +462,8 @@
     </geometry>
   </collision>
 </link>
-<joint name="base_wheel_joint" type="continuous">
-  <parent link="base_link"/>
+<joint name="chassis_wheel_joint" type="continuous">
+  <parent link="chassis_link"/>
   <child link="wheel_link"/>
   <origin xyz="-0.791 0 -0.558" rpy="0 0 0"/>
   <axis xyz="0 1 0"/>
