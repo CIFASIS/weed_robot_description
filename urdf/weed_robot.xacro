@@ -10,7 +10,7 @@
 <xacro:property name="config" value="${load_yaml(config_yaml)}"/>
 
 <!-- Base -->
-<link name="base_link"/>
+<link name="base_link_vis"/>
 
 <!-- Chassis -->
 <link name="chassis_link">
@@ -46,7 +46,7 @@
   </visual>
 </gazebo>
 <joint name="base_chassis_joint" type="fixed">
-  <parent link="base_link"/>
+  <parent link="base_link_vis"/>
   <child link="chassis_link"/>
   <origin xyz="0 0 0.83" rpy="0 0 0"/>
 </joint>
