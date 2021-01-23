@@ -8,6 +8,11 @@ panels:
    width: "2.004"
    depth: "1.485"
    height: "0.035"
+sprayers:
+   mass: "3.0"
+   width: "0.614"
+   depth: "2.164"
+   height: "0.300"
 fork:
    mass: "3.0"
    width: "0.112"
@@ -17,3 +22,7 @@ wheel:
    mass: "7.5"
    length: "0.076"
    radius: "0.272"
+   kp: "10000000" # 10^7
+   kd: "1"
+   mu1: "100"
+   mu2: "100"

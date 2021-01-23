@@ -48,7 +48,7 @@
 <joint name="base_chassis_joint" type="fixed">
   <parent link="base_link_vis"/>
   <child link="chassis_link"/>
-  <origin xyz="0 0 0.83" rpy="0 0 0"/>
+  <origin xyz="0.791 0 0.83" rpy="0 0 0"/>
 </joint>
 
 <!-- Panels -->
@@ -90,6 +90,45 @@
   <origin xyz="0 0 0.1875" rpy="0 0 0"/>
 </joint>
 
+<!-- Sprayers -->
+<link name="sprayers_link">
+  <inertial>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <mass value="${config['sprayers']['mass']}"/>
+    <xacro:box_inertia link_config="${config['sprayers']}"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:if value="$(arg meshes)">
+        <mesh filename="package://weed_robot_description/meshes/sprayers.stl"/>
+      </xacro:if>
+      <xacro:unless value="$(arg meshes)">
+        <xacro:box_geometry link_config="${config['sprayers']}"/>
+      </xacro:unless>
+    </geometry>
+    <material name="dark_grey"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <xacro:box_geometry link_config="${config['sprayers']}"/>
+    </geometry>
+  </collision>
+</link>
+<gazebo reference="sprayers_link">
+  <visual>
+    <material>
+      <xacro:gmaterial color="dark_grey"/>
+    </material>
+  </visual>
+</gazebo>
+<joint name="chassis_sprayers_joint" type="fixed">
+  <parent link="chassis_link"/>
+  <child link="sprayers_link"/>
+  <origin xyz="-1.216 0 -0.080" rpy="0 0 0"/>
+</joint>
+
 <!-- Fork front-left -->
 <link name="fork_fl_link">
   <inertial>
@@ -126,9 +165,10 @@
 <joint name="chassis_fork_fl_joint" type="revolute">
   <parent link="chassis_link"/>
   <child link="fork_fl_link"/>
-  <origin rpy="0 0 0" xyz="0.791 0.527 -0.292"/>
+  <origin xyz="0.791 0.527 -0.292" rpy="0 0 0"/>
   <axis xyz="0 0 1"/>
-  <limit lower="${-25/180*pi}" upper="${36/180*pi}" effort="1000" velocity="0.01"/>
+  <limit lower="${-28.391/180*pi}" upper="${40.186/180*pi}" effort="1000" velocity="0.01"/> <!-- calculado con radio de giro 2.40m -->
+  <safety_controller soft_lower_limit="${-27.986/180*pi}" soft_upper_limit="${39.443/180*pi}" k_velocity="10" k_position="15"/> <!-- calculado con radio de giro 2.45m -->
 </joint>
 
 <!-- Fork front-right -->
@@ -169,7 +209,8 @@
   <child link="fork_fr_link"/>
   <origin xyz="0.791 -0.527 -0.292" rpy="0 0 0"/>
   <axis xyz="0 0 1"/>
-  <limit lower="${-36/180*pi}" upper="${25/180*pi}" effort="1000" velocity="0.01"/>
+  <limit lower="${-40.186/180*pi}" upper="${28.391/180*pi}" effort="1000" velocity="0.01"/>
+  <safety_controller soft_lower_limit="${-39.443/180*pi}" soft_upper_limit="${27.986/180*pi}" k_velocity="10" k_position="15"/>
 </joint>
 
 <!-- Steer -->
@@ -179,7 +220,8 @@
   <child link="steer_link"/>
   <origin xyz="0.791 0 -0.292" rpy="0 0 0"/>
   <axis xyz="0 0 1"/>
-  <limit lower="${-30/180*pi}" upper="${30/180*pi}" effort="1000" velocity="0.01"/>
+  <limit lower="${-33.392/180*pi}" upper="${33.392/180*pi}" effort="1000" velocity="0.01"/>
+  <safety_controller soft_lower_limit="${-32.851/180*pi}" soft_upper_limit="${32.851/180*pi}" k_velocity="10" k_position="15"/>
 </joint>
 
 <!-- Fork rear-left -->
@@ -290,10 +332,10 @@
   </collision>
 </link>
 <gazebo reference="wheel_fl_link">
-  <kp value="1000000"/>
-  <kd value="1"/>
-  <mu1 value="10"/>
-  <mu2 value="10"/>
+  <kp value="${config['wheel']['kp']}"/>
+  <kd value="${config['wheel']['kd']}"/>
+  <mu1 value="${config['wheel']['mu1']}"/>
+  <mu2 value="${config['wheel']['mu2']}"/>
   <visual>
     <material>
       <xacro:gmaterial color="black"/>
@@ -337,10 +379,10 @@
   </collision>
 </link>
 <gazebo reference="wheel_fr_link">
-  <kp value="1000000"/>
-  <kd value="1"/>
-  <mu1 value="10"/>
-  <mu2 value="10"/>
+  <kp value="${config['wheel']['kp']}"/>
+  <kd value="${config['wheel']['kd']}"/>
+  <mu1 value="${config['wheel']['mu1']}"/>
+  <mu2 value="${config['wheel']['mu2']}"/>
   <visual>
     <material>
       <xacro:gmaterial color="black"/>
@@ -384,10 +426,10 @@
   </collision>
 </link>
 <gazebo reference="wheel_rl_link">
-  <kp value="1000000"/>
-  <kd value="1"/>
-  <mu1 value="10"/>
-  <mu2 value="10"/>
+  <kp value="${config['wheel']['kp']}"/>
+  <kd value="${config['wheel']['kd']}"/>
+  <mu1 value="${config['wheel']['mu1']}"/>
+  <mu2 value="${config['wheel']['mu2']}"/>
   <visual>
     <material>
       <xacro:gmaterial color="black"/>
@@ -431,10 +473,10 @@
   </collision>
 </link>
 <gazebo reference="wheel_rr_link">
-  <kp value="1000000"/>
-  <kd value="1"/>
-  <mu1 value="10"/>
-  <mu2 value="10"/>
+  <kp value="${config['wheel']['kp']}"/>
+  <kd value="${config['wheel']['kd']}"/>
+  <mu1 value="${config['wheel']['mu1']}"/>
+  <mu2 value="${config['wheel']['mu2']}"/>
   <visual>
     <material>
       <xacro:gmaterial color="black"/>
