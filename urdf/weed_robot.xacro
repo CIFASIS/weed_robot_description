@@ -62,7 +62,8 @@
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
       <xacro:if value="$(arg meshes)">
-        <mesh filename="package://weed_robot_description/meshes/panels.stl"/>
+        <!-- <mesh filename="package://weed_robot_description/meshes/panels.stl"/> -->
+        <mesh filename="package://weed_robot_description/meshes/panels.dae"/>
       </xacro:if>
       <xacro:unless value="$(arg meshes)">
         <xacro:box_geometry link_config="${config['panels']}"/>
@@ -77,13 +78,13 @@
     </geometry>
   </collision>
 </link>
-<gazebo reference="panels_link">
+<!-- <gazebo reference="panels_link">
   <visual>
     <material>
       <xacro:gmaterial color="blue"/>
     </material>
   </visual>
-</gazebo>
+</gazebo> -->
 <joint name="chassis_panels_joint" type="fixed">
   <parent link="chassis_link"/>
   <child link="panels_link"/>
