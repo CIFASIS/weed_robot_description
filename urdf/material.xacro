@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<!-- Define algunos colores para ser usados en rviz y Gazebo -->
+<!-- defines some colors to be used in rviz and gazebo -->
 <material name="grey">
   <color rgba="0.42 0.42 0.42 1"/>
 </material>
